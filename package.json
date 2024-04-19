@@ -51,7 +51,9 @@
     "@adonisjs/core": "^6.2.2",
     "@types/jsonwebtoken": "^9.0.6",
     "jsonwebtoken": "^9.0.2",
-    "reflect-metadata": "^0.2.1"
+    "reflect-metadata": "^0.2.1",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
   },
   "eslintConfig": {
     "extends": "@adonisjs/eslint-config/app"

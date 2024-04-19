@@ -5,6 +5,7 @@ import { JwtService } from '#services/jwt_service'
 import { registerUserValidator } from '#validators/user'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
+import * as bcrypt from 'bcrypt'
 
 @inject()
 export default class UsersController {
@@ -29,7 +30,8 @@ export default class UsersController {
     const data = await request.validateUsing(registerUserValidator)
 
     try {
-      await User.create(data)
+      const hashedPassword = await this.hashData(data.password)
+      await User.create({ ...data, password: hashedPassword })
       return response.created(data)
     } catch (error) {
       return response.badRequest({ message: error.message })
@@ -42,5 +44,10 @@ export default class UsersController {
 
     const jwt = this.jwtService.generateAccessToken(user)
     return response.header('Authorization', jwt).json(user)
+  }
+
+  private async hashData(data: string): Promise<string> {
+    const salt = await bcrypt.genSalt()
+    return await bcrypt.hash(data, salt)
   }
 }

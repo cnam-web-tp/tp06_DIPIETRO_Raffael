@@ -1,0 +1,28 @@
+meta {
+  name: Register
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3333/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "login": "jean",
+    "password": "123456",
+    "passwordConfirmation": "123456",
+    "firstName": "Jean",
+    "lastName": "Prout",
+    "gender": "Homme",
+    "email": "jeanprout@prout.fr",
+    "phone": "010604069",
+    "address": "5 rue du prout",
+    "zipCode": "67089",
+    "city": "Schlagbourg",
+    "country": "Fronce"
+  }
+}

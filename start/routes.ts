@@ -13,10 +13,9 @@ const UsersController = () => import('#controllers/users_controller')
 
 router.get('/', async () => 'It works!')
 
-router
-  .group(() => {
-    router.post('/register', [UsersController, 'register'])
-    router.post('/login', [UsersController, 'login'])
-    router.put('/update', [UsersController, 'update'])
-  })
-  .prefix('auth')
+router.group(() => {
+  router.post('/register', [UsersController, 'register'])
+  router.post('/login', [UsersController, 'login'])
+  router.put('/update', [UsersController, 'update'])
+})
+// .prefix('auth')

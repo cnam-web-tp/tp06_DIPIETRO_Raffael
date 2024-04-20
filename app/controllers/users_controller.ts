@@ -28,7 +28,7 @@ export default class UsersController {
     }
 
     // generate jwt token
-    const user = { id: usr.getDataValue('userId'), username: request.input('username') }
+    const user = { id: usr.getDataValue('userId'), username: request.input('login') }
     const jwt = this.jwtService.generateAccessToken(user)
 
     return response.header('Authorization', jwt).json({

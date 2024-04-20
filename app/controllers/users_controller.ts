@@ -58,6 +58,17 @@ export default class UsersController {
     return response.header('Authorization', jwt).json(user)
   }
 
+  async profile({ request, response }: HttpContext) {
+    const userId = (request.jwt?.payload as any).id
+    const user = await User.findOne({ where: { userId } })
+    if (!user) {
+      return response.unauthorized()
+    }
+    // remove the password from the user object
+    const { password, ...userData } = user.toJSON()
+    return response.json(userData)
+  }
+
   private async hashData(data: string): Promise<string> {
     const salt = await bcrypt.genSalt()
     return await bcrypt.hash(data, salt)

@@ -13,7 +13,7 @@ import { middleware } from './kernel.js'
 const UsersController = () => import('#controllers/users_controller')
 
 router.get('/', async () => 'It works!')
-router.get('/me', async () => 'It works!').use(middleware.jwt())
+router.get('/profile', [UsersController, 'profile']).use(middleware.jwt())
 
 router
   .group(() => {

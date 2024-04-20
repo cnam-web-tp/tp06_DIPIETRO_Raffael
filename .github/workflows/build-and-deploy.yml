@@ -57,7 +57,7 @@ jobs:
           key: ${{ secrets.HOST_KEY }}
           port: ${{ secrets.HOST_PORT }}
           script: |
-            cd /home/raffael/DOCKER/Tp-web/backend
+            cd ~/DOCKER/TP-web/backend
             docker compose -f docker-compose.yml pull backend
             docker compose -f docker-compose.yml down backend
             docker compose -f docker-compose.yml --env-file ./.env up -d backend

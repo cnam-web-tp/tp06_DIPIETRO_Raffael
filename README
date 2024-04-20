@@ -1,0 +1,10 @@
+# Backend Adonis project for the cnam web course
+
+## Usage with docker
+‘‘‘
+docker build -t tp-backend .
+‘‘‘
+
+‘‘‘
+docker run -p 3333:3333 -e PORT=3333 -e APP_KEY=[16char long key] tp-backend
+‘‘‘

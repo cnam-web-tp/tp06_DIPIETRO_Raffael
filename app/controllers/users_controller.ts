@@ -2,7 +2,7 @@
 
 import { User } from '#database/models/users'
 import { JwtService } from '#services/jwt_service'
-import { registerUserValidator } from '#validators/user'
+import { loginUserValidator, registerUserValidator } from '#validators/user'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 import * as bcrypt from 'bcrypt'
@@ -12,17 +12,29 @@ export default class UsersController {
   constructor(private readonly jwtService: JwtService) {}
 
   async login({ request, response }: HttpContext) {
-    // validate data
-    // const data = await request.validateUsing
+    const data = await request.validateUsing(loginUserValidator)
 
     // check username and password in database
+    const usr = await User.findOne({ where: { login: data.login } })
+
+    const errorMessage = 'Invalid username or password'
+    if (!usr) {
+      return response.badRequest({ message: errorMessage })
+    }
+
+    const isPasswordValid = await bcrypt.compare(data.password, usr.getDataValue('password'))
+    if (!isPasswordValid) {
+      return response.badRequest({ message: errorMessage })
+    }
 
     // generate jwt token
-    // const user = { id: crypto.randomUUID(), username: request.input('username') }
-    // const jwt = this.jwtService.generateAccessToken(user)
+    const user = { id: usr.getDataValue('userId'), username: request.input('username') }
+    const jwt = this.jwtService.generateAccessToken(user)
 
-    // return response.header('Authorization', jwt).json(user)
-    return response.json({ message: 'login' })
+    return response.header('Authorization', jwt).json({
+      ...user,
+      token: jwt,
+    })
   }
 
   async register({ request, response }: HttpContext) {

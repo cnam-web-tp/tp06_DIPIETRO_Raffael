@@ -17,3 +17,10 @@ export const registerUserValidator = vine.compile(
     country: vine.string(),
   })
 )
+
+export const loginUserValidator = vine.compile(
+  vine.object({
+    login: vine.string().minLength(4).alphaNumeric().trim(),
+    password: vine.string().minLength(6).alphaNumeric(),
+  })
+)

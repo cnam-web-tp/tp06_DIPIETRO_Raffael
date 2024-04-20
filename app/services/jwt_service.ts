@@ -2,7 +2,7 @@ import env from '#start/env'
 import { inject } from '@adonisjs/core'
 import jwt, { Jwt } from 'jsonwebtoken'
 
-const JWT_ACCESS_EXPIRES_IN = '365d'
+const JWT_ACCESS_EXPIRES_IN = '1d'
 
 @inject()
 export class JwtService {

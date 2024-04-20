@@ -9,9 +9,11 @@ import { defineConfig } from '@adonisjs/cors'
  */
 const corsConfig = defineConfig({
   enabled: true,
-  origin: env.get('production')
-    ? ['https://raffaeldp.fr', 'https://tp06-dipietro-raffael.vercel.app']
-    : ['http://localhost:4200'],
+  origin: [
+    'https://raffaeldp.fr',
+    'https://tp06-dipietro-raffael.vercel.app',
+    'http://localhost:4200',
+  ],
   methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
   headers: true,
   exposeHeaders: [],

@@ -61,4 +61,4 @@ jobs:
             cat github_pat | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
             docker compose -f docker-compose.yml pull backend
             docker compose -f docker-compose.yml down backend
-            docker compose -f docker-compose.yml --env-file ./.env up -d webapp
+            docker compose -f docker-compose.yml --env-file ./.env up -d backend

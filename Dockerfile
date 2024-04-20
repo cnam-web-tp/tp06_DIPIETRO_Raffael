@@ -22,7 +22,7 @@ ENV HOST=0.0.0.0
 ENV PORT=$PORT
 ENV APP_KEY=$APP_KEY
 COPY --chown=node:node ./package*.json ./
-RUN npm ci --production
+RUN npm ci --omit=dev
 COPY --chown=node:node --from=build /home/node/app/build .
 EXPOSE $PORT
 CMD [ "dumb-init", "node", "bin/server.js" ]

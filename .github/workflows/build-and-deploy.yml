@@ -1,0 +1,64 @@
+name: Build Personnal Website
+
+on:
+  push:
+    branches: [master]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Log in the Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+
+  #   permissions:
+  #     contents: read
+  #     packages: write
+
+  #   needs: build
+
+  #   steps:
+  #     - name: Deploy to GitHub Pages
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.HOST }}
+  #         username: ${{ secrets.USERNAME }}
+  #         key: ${{ secrets.KEY }}
+  #         port: ${{ secrets.PORT }}
+  #         script: |
+  #           cd ~/DOCKER/Tp-web
+  #           cat github_pat | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+  #           docker compose -f docker-compose.yml pull backend
+  #           docker compose -f docker-compose.yml down backend
+  #           docker compose -f docker-compose.yml --env-file ./.env up -d webapp
